@@ -1,20 +1,23 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import app from "./app.js";
-import connectDB from "./config/db.js";
+import app from "./app.js"; 
+
+import connectDB from "./config/db.js"; 
+
 import { connectRedis } from "./config/redis.js";
+
 import logger from "./config/logger.js";
+
 import { startAutoCloseJob } from "./jobs/autoCloseJob.js";
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
   try {
-    await connectDB();
-  connectRedis();
-  
-  startAutoCloseJob();    //For auto closing job after 2 mins
+     await connectDB();
+     connectRedis();
+     startAutoCloseJob();    //For auto closing job after 2 mins
 
     app.listen(PORT, () => {
       logger.info(`Server running on port ${PORT}`);

@@ -4,11 +4,13 @@
     "window_mins": 60,
     "expire_after_mins": 1440
   },
+
   "feedback_negative": {
     "escalate_if_count": 2,
     "window_mins": 1440,
     "expire_after_mins": 2880
   },
+  
   "compliance": {
     "auto_close_if": "document_valid",
     "expire_after_mins": 1440

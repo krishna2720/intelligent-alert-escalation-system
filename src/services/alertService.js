@@ -1,37 +1,31 @@
-import Alert from "../models/Alert.js";
-import { ApiError } from "../utils/apiError.js";
-import { evaluateEscalation } from "./ruleEngine.js";
+import Alert from "../models/Alert.js";   // schema leke aao 
+
+import { ApiError } from "../utils/apiError.js";  //standard error response 
+
+import { evaluateEscalation } from "./ruleEngine.js";  
+
 import { getRedisClient } from "../config/redis.js";
 
-// Clears cached dashboard aggregates
-const invalidateDashboardCache = async () => {
-  const redis = getRedisClient();
-  if (!redis) return;
-
-  await redis.del("dashboard:summary");
-  await redis.del("dashboard:topDrivers");
-};
 
 const createAlertService = async (data) => {
   const { sourceType, severity, driverId, metadata } = data;
 
   if (!sourceType || !severity || !driverId) {
-    throw new ApiError(400, "sourceType, severity and driverId are required");
+    throw new ApiError(400, "sourceType, severity and driverId are required field");
   }
 
-  const alert = new Alert({
-    sourceType,
-    severity,
-    driverId,
-    metadata,
-    history: [
-      {
-        fromState: null,
-        toState: "OPEN",
-        reason: "Alert created",
-      },
-    ],
-  });
+  const alert = new Alert({sourceType
+                          ,severity,
+                          driverId,
+                          metadata,
+                          history: [
+                                      {
+                                      fromState: null,
+                                      toState: "OPEN",
+                                      reason: "Alert created",
+                                      },
+                                    ],
+                         });
 
   await alert.save();
 
@@ -41,6 +35,16 @@ const createAlertService = async (data) => {
   await invalidateDashboardCache();
 
   return alert;
+};
+
+
+// Clears cached dashboard aggregates
+const invalidateDashboardCache = async () => {
+  const redis = getRedisClient();
+  if (!redis) return;
+
+  await redis.del("dashboard:summary");
+  await redis.del("dashboard:topDrivers");
 };
 
 const getAlertByAlertId = async (alertId) => {

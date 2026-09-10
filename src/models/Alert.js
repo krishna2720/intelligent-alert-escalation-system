@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 
 // Possible states an alert can be in
 export const ALERT_STATES = ["OPEN", "ESCALATED", "AUTO_CLOSED", "RESOLVED"];

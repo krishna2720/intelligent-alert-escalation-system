@@ -1,10 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
-import {
-  createAlertService,
-  getAlertByAlertId,
-  resolveAlertService,
-} from "../services/alertService.js";
+import {createAlertService,getAlertByAlertId,resolveAlertService,} from "../services/alertService.js";
 
 const createAlert = asyncHandler(async (req, res) => {
   const alert = await createAlertService(req.body);
@@ -13,6 +9,8 @@ const createAlert = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(201, alert, "Alert created"));
 });
+
+
 
 const getAlert = asyncHandler(async (req, res) => {
   const alert = await getAlertByAlertId(req.params.alertId);

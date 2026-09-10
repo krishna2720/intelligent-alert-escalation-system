@@ -1,9 +1,13 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { ApiError } from "../utils/apiError.js";
-import { ApiResponse } from "../utils/apiResponse.js";
+import bcrypt from "bcryptjs";  //for password hashing 
+
+import jwt from "jsonwebtoken";   
+
+import User from "../models/User.js";  // for saving data in database
+
+import { asyncHandler } from "../utils/asyncHandler.js"; 
+
+import { ApiError } from "../utils/apiError.js";  //standard api error
+import { ApiResponse } from "../utils/apiResponse.js"; //standard api response
 
 const register = asyncHandler(async (req, res) => {
   const { email, password, role } = req.body;
@@ -19,11 +23,8 @@ const register = asyncHandler(async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = await User.create({
-    email,
-    password: hashedPassword,
-    role: role || "analyst",
-  });
+  const user = await User.create({email,password: hashedPassword,role: role || "analyst",});  
+  //by default role assigned should be analyst
 
   return res
     .status(201)
@@ -34,13 +35,15 @@ const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
+
   if (!user) {
-    throw new ApiError(401, "Invalid credentials");
+    throw new ApiError(401, "Invalid credentials , firstly register the user");
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
+
   if (!isMatch) {
-    throw new ApiError(401, "Invalid credentials");
+    throw new ApiError(401, "Invalid credentials, password is not correct ");
   }
 
   const token = jwt.sign(
