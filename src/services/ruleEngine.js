@@ -24,7 +24,7 @@ const evaluateEscalation = async (alert) => {
   // If already escalated, no need to re-evaluate
   if (alert.status === "ESCALATED") return;
 
-  const windowStart = new Date(Date.now() - rule.window_mins * 60 * 1000);
+  const windowStart = new Date(Date.now() - rule.window_mins * 60 * 1000); //start time
  
   //search in the database via give rules (same driver id + same source type + recent time)
   const countInWindow = await Alert.countDocuments({

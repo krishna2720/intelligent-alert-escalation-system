@@ -1,9 +1,10 @@
+
 import Alert from "../models/Alert.js";
 import { getRedisClient } from "../config/redis.js";
 
 const CACHE_TTL = 60;
 
-// Safely read from Redis
+// Safely read from Redis cache
 const getFromCache = async (key) => {
   const redis = getRedisClient();
   if (!redis) return null;
@@ -16,7 +17,7 @@ const getFromCache = async (key) => {
   }
 };
 
-// Safely write to Redis
+// Safely write to Redis cache
 const setToCache = async (key, value) => {
   const redis = getRedisClient();
   if (!redis) return;
@@ -32,7 +33,11 @@ const getSeveritySummary = async () => {
   const cacheKey = "dashboard:summary";
 
   const cached = await getFromCache(cacheKey);
-  if (cached) return cached;
+  if (cached){
+    console.log("DATA COMES FROM THE REDDIS ")
+    return cached;
+  }
+  console.log("DATA IS COMMING FROM MONGO DB, YOU ARE LATE CHECK IN MONGO DB")
 
   const data = await Alert.aggregate([
     { $match: { status: { $in: ["OPEN", "ESCALATED"] } } },
@@ -53,8 +58,11 @@ const getTopDrivers = async () => {
   const cacheKey = "dashboard:topDrivers";
 
   const cached = await getFromCache(cacheKey);
-  if (cached) return cached;
-
+  if (cached) {
+    console.log("data comes from the reddis bro"); 
+    return cached;
+  }
+  console.log("data is coming from the mongo db bro ");
   const data = await Alert.aggregate([
     { $match: { status: { $in: ["OPEN", "ESCALATED"] } } },
     {

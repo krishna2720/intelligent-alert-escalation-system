@@ -29,7 +29,7 @@ const createAlertService = async (data) => {
 
   await alert.save();
 
-  // Run rule engine after creation
+  // Run rule engine after creation in the database 
   await evaluateEscalation(alert);
 
   await invalidateDashboardCache();

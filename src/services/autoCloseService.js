@@ -12,29 +12,24 @@ const rules = JSON.parse(fs.readFileSync(rulesPath, "utf-8"));
 
 const processAutoClose = async () => {
   const activeAlerts = await Alert.find({
-    status: { $in: ["OPEN", "ESCALATED"] },
+    status: { $in: ["OPEN", "ESCALATED"] },   //we have to auto close the alerts states from open -> auto close or escalated-> auto close 
   });
 
   for (const alert of activeAlerts) {
     const rule = rules[alert.sourceType];
     if (!rule) continue;
 
-    let reason = null;
+    let reason = null;  //intially we dont know the reason of auto closing 
 
-    // Condition 1: compliance flag
-    if (
-      rule.auto_close_if &&
-      alert.metadata?.[rule.auto_close_if] === true
-    ) {
+    // Condition 1: compliance flag (got the valid document )
+    if (rule.auto_close_if && alert.metadata?.[rule.auto_close_if] === true) {
       reason = "Compliance condition satisfied";
     }
 
     // Condition 2: expiry window
     if (!reason && rule.expire_after_mins) {
-      const expiryTimestamp =
-        alert.createdAt.getTime() +
-        rule.expire_after_mins * 60 * 1000;
-
+      const expiryTimestamp =alert.createdAt.getTime()+rule.expire_after_mins * 60 * 1000;
+      
       if (Date.now() > expiryTimestamp) {
         reason = "Alert expired";
       }
@@ -44,7 +39,7 @@ const processAutoClose = async () => {
 
     const previousState = alert.status;
 
-    alert.status = "AUTO_CLOSED";
+    alert.status = "AUTO_CLOSED";   //aut oclosed due to the time expiry bro 
 
     alert.history.push({
       fromState: previousState,

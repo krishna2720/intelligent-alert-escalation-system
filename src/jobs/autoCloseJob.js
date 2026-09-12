@@ -4,7 +4,7 @@ import logger from "../config/logger.js";
 
 // Runs every 2 minutes
 const startAutoCloseJob = () => {
-  const schedule = "*/2 * * * *";
+  const schedule = "*/5 * * * *";
 
   cron.schedule(schedule, async () => {
     try {

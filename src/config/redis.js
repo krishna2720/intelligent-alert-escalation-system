@@ -2,7 +2,7 @@ import Redis from "ioredis";
 import logger from "./logger.js";
 
 let client = null;
-
+//connection through reddis
 const connectRedis = () => {
   client = new Redis({
     host: process.env.REDIS_HOST,
