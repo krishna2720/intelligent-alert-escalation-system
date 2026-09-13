@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+
+import axios from "axios";  //frontend nd backend connection
+
 import Summary from "./components/Summary.js";
 import TopDrivers from "./components/TopDrivers.js";
 import Trends from "./components/Trends.js";
 import RecentClosed from "./components/RecentClosed.js";
 import RuleConfig from "./components/RuleConfiguration.js";
 
-const BASE_URL = "http://localhost:5000/api/v1";
+const BASE_URL = "http://localhost:5000/api/v1";      //our backend server url so can fetch data on our frontend
 
 function App() {
-  const [summaryData, setSummaryData] = useState([]);
-  const [driverStats, setDriverStats] = useState([]);
-  const [closedAlerts, setClosedAlerts] = useState([]);
-  const [trendData, setTrendData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [ruleConfig, setRuleConfig] = useState(null);
+  const [summaryData, setSummaryData] = useState([]);   //dashboard-summary
+  const [driverStats, setDriverStats] = useState([]);   //top-drivers
+  const [closedAlerts, setClosedAlerts] = useState([]);  //recently-auto-closed
+  const [trendData, setTrendData] = useState([]);       //dashboard trends
 
-  useEffect(() => {
-    loadDashboard();
-  }, []);
+  const [loading, setLoading] = useState(true);      //abhi loading=true hai yr 
+  const [error, setError] = useState(null);         //abhi eror nhi hai 
+  
+  const [ruleConfig, setRuleConfig] = useState(null);   //dashboard rules files 
+
+  useEffect(() => {loadDashboard();},[]);
 
   const loadDashboard = async () => {
     try {
@@ -31,7 +33,7 @@ function App() {
         axios.get(`${BASE_URL}/dashboard/trends`),
       ]);
 
-      setSummaryData(summary.data.data);
+      setSummaryData(summary.data.data); //api response is there 
       setDriverStats(drivers.data.data);
       setClosedAlerts(closed.data.data);
       setTrendData(trends.data.data);
@@ -43,12 +45,14 @@ function App() {
       } catch (ruleErr) {
         console.warn("Rules endpoint protected or unavailable");
       }
-    } catch (err) {
+    } 
+   catch (err) {
       setError("Unable to load dashboard data");
-    } finally {
+    }
+    finally {
       setLoading(false);
     }
-  };
+ };
 
   if (loading) {
     return <div className="dashboard">Loading dashboard...</div>;
@@ -61,7 +65,6 @@ function App() {
   return (
     <div className="dashboard">
       <div className="title">Intelligent Alert Dashboard</div>
-
       <Summary data={summaryData} />
       <TopDrivers data={driverStats} />
       <Trends data={trendData} />
