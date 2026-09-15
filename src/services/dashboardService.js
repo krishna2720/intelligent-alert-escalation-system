@@ -87,32 +87,62 @@ const getRecentAutoClosed = async () => {
 };
 
 const getAlertTrends = async () => {
+
   return Alert.aggregate([
     {
       $group: {
         _id: {
           $dateToString: {
             format: "%Y-%m-%d",
-            date: "$createdAt",
-          },
+            date: "$createdAt"
+          }
         },
-        total: { $sum: 1 },
+
+        total: {
+          $sum: 1
+        },
+
         escalated: {
           $sum: {
-            $cond: [{ $eq: ["$status", "ESCALATED"] }, 1, 0],
-          },
+            $cond: [
+              { $eq: ["$status", "ESCALATED"] },
+              1,
+              0
+            ]
+          }
         },
+
         autoClosed: {
           $sum: {
-            $cond: [{ $eq: ["$status", "AUTO_CLOSED"] }, 1, 0],
-          },
+            $cond: [
+              { $eq: ["$status", "AUTO_CLOSED"] },
+              1,
+              0
+            ]
+          }
         },
-      },
-    },
-    { $sort: { _id: 1 } },
-  ]);
-};
 
+        resolved: {
+          $sum: {
+            $cond: [
+              { $eq: ["$status", "RESOLVED"] },
+              1,
+              0
+            ]
+          }
+        },
+       
+      }
+    },
+
+    {
+      $sort: {
+        _id: 1
+      }
+    }
+  ]);
+
+};
 export {
   getSeveritySummary,
   getTopDrivers,

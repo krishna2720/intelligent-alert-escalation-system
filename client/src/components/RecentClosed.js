@@ -4,50 +4,71 @@ import axios from "axios";
 const BASE_URL = "http://localhost:5000/api/v1";
 
 const RecentClosed = ({ data }) => {
-            const [selected, setSelected] = useState(null);
-            const fetchDetails = async (alertId) => {
-                 const res = await axios.get(`${BASE_URL}/alerts/${alertId}`);
-                 setSelected(res.data.data);
-            };
+  const [selected, setSelected] = useState(null);
+
+  const fetchDetails = async (alertId) => {
+    try {
+      const res = await axios.get(`${BASE_URL}/alerts/${alertId}`);
+      setSelected(res.data.data);
+    } catch (error) {
+      console.error("Error fetching alert details:", error);
+    }
+  };
 
   return (
-            <div className="card">
-                      <h3>Recent Auto Closed Alerts</h3>
-                      <table className="table">
-                              <thead>
-                                    <tr>
-                                        <th>Alert ID</th>
-                                        <th>Source</th>
-                                    </tr>
-                              </thead>
-                             
-                              <tbody>
-                                    {data.map((alert) => (
-                                      <tr key={alert._id} onClick={() => fetchDetails(alert.alertId)}  style={{ cursor: "pointer" }} >
-                                               <td>{alert.alertId}</td>
-                                               <td>{alert.sourceType}</td>
-                                      </tr>
-                                    ))}
-                              </tbody>
-                     </table>
+    <div className="card">
+      <h3>Recent Auto Closed Alerts</h3>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Alert ID</th>
+            <th>Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((alert) => (
+            <tr
+              key={alert._id}
+              onClick={() => fetchDetails(alert.alertId)}
+              style={{ cursor: "pointer" }}
+            >
+              <td>{alert.alertId}</td>
+              <td>{alert.sourceType}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-                     {selected && (<div className="drilldown">
-                                               <h4>Alert Details</h4>
-                                               <p><strong>Status:</strong> {selected.status}</p>
-                                               <p><strong>Severity:</strong> {selected.severity}</p>
-                                               <p><strong>Driver:</strong> {selected.driverId}</p>
+      {/* Simple Modal */}
+      {selected && (
+        <div className="modal-overlay" onClick={() => setSelected(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setSelected(null)}>
+              &times;
+            </button>
 
-                                               <h5>History</h5>
-                                                        <ul>  {selected.history.map((h, idx) => (
-                                                                 <li key={idx}> {h.fromState} → {h.toState} ({h.reason}) </li>
-                                                               ))}
-                                                        </ul>
+            <h4>Alert Details</h4>
+            <p><strong>Status:</strong> {selected.status}</p>
+            <p><strong>Severity:</strong> {selected.severity}</p>
+            <p><strong>Driver:</strong> {selected.driverId}</p>
 
-                                               <h5>Metadata</h5>
-                                  <pre>{JSON.stringify(selected.metadata, null, 2)}</pre>
-                                </div>
-                                )}
-            </div>
+            <h5>History</h5>
+            <ul>
+              {selected.history?.map((h, idx) => (
+                <li key={idx}>
+                  {h.fromState || "START"} &rarr; {h.toState} ({h.reason})
+                </li>
+              ))}
+            </ul>
+
+            <h5>Metadata</h5>
+            <pre style={{ background: "#eee", padding: "10px" }}>
+              {JSON.stringify(selected.metadata, null, 2)}
+            </pre>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
