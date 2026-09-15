@@ -2,7 +2,7 @@
 import Alert from "../models/Alert.js";
 import { getRedisClient } from "../config/redis.js";
 
-const CACHE_TTL = 60;
+const CACHE_TTL = 5;
 
 // Safely read from Redis cache
 const getFromCache = async (key) => {
