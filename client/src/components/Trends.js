@@ -1,44 +1,85 @@
-import {Chart as ChartJS,CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend,} from "chart.js";
-
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { Line } from "react-chartjs-2";
 
-// Register required components
-ChartJS.register(CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend,);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Trends = ({ data }) => {
-                        const chartData = {
-                                   labels: data.map((item) => item._id),
-                                   datasets: [ {  label: "Total Alerts",
-                                                  data: data.map((item) => item.total),
-                                                  borderColor: "#2563EB",
-                                                  borderDash:[5,5],
-                                                  tension: 0.1,
-                                                },
-                                               {  label: "Escalations",
-                                                  data: data.map((item) => item.escalated),
-                                                  borderColor: "#DC2626",                                          
-                                                  tension: 0.1,
-                                                },
-                                               {  label: "Auto Closed",
-                                                  data: data.map((item) => item.autoClosed),
-                                                  borderColor: "#16A34A",
-                                                  tension: 0.1,
-                                                },
-                                                {
-                                                  label: "Resolved",
-                                                  data: data.map((item) => item.resolved),
-                                                  borderColor: "#7C3AED",
-                                                  tension: 0.1,
-                                                },
-                                             ],
-                          };
+  const chartData = {
+    labels: data.map((item) => item._id),
+    datasets: [
+      {
+        label: "Total Alerts",
+        data: data.map((item) => item.total),
+        borderColor: "#4f8cff",
+        borderDash: [5, 5],
+        tension: 0.1,
+      },
+      {
+        label: "Escalations",
+        data: data.map((item) => item.escalated),
+        borderColor: "#ef4444",
+        tension: 0.1,
+      },
+      {
+        label: "Auto Closed",
+        data: data.map((item) => item.autoClosed),
+        borderColor: "#22c55e",
+        tension: 0.1,
+      },
+      {
+        label: "Resolved",
+        data: data.map((item) => item.resolved),
+        borderColor: "#a855f7",
+        tension: 0.1,
+      },
+    ],
+  };
 
-     return (
-              <div className="card">
-                          <h3>Alert Trends</h3>
-                          <Line data={chartData} />
-              </div>
-            );
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: { color: "#cbd5e1" },
+      },
+    },
+    scales: {
+      x: {
+        ticks: { color: "#94a3b8" },
+        grid: { color: "rgba(148, 163, 184, 0.12)" },
+      },
+      y: {
+        ticks: { color: "#94a3b8" },
+        grid: { color: "rgba(148, 163, 184, 0.12)" },
+      },
+    },
+  };
+
+  return (
+    <div className="card">
+      <h3>Alert Trends</h3>
+      <div className="trend-chart">
+        <Line data={chartData} options={chartOptions} />
+      </div>
+    </div>
+  );
 };
 
 export default Trends;

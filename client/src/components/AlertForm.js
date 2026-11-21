@@ -40,7 +40,7 @@ const AlertForm = ({ onAlertCreated }) => {
 
   return (
     <section className="card">
-      <h3>Generate an Alert</h3>
+      <h3>Generate Alert</h3>
       <form className="alert-form" onSubmit={handleSubmit}>
         <label>
           Source type

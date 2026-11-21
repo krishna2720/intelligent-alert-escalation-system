@@ -64,7 +64,7 @@ const RecentClosed = ({ data }) => {
             </ul>
 
             <h5>Metadata</h5>
-            <pre style={{ background: "#eee", padding: "10px" }}>
+            <pre className="metadata-block">
               {JSON.stringify(selected.metadata, null, 2)}
             </pre>
           </div>
