@@ -23,6 +23,7 @@ const RecentClosed = ({ data }) => {
           <tr>
             <th>Alert ID</th>
             <th>Source</th>
+            <th>Driver ID</th>
           </tr>
         </thead>
         <tbody>
@@ -34,6 +35,7 @@ const RecentClosed = ({ data }) => {
             >
               <td>{alert.alertId}</td>
               <td>{alert.sourceType}</td>
+              <td>{alert.driverId}</td>
             </tr>
           ))}
         </tbody>

@@ -18,6 +18,8 @@ const Summary = ({data}) => {
   );
 };
 
+
+
 export default Summary;
 /*
 [{"_id": "CRITICAL","count": 2},

@@ -74,6 +74,8 @@ The system exposes APIs for:
 - Recent auto-closed alerts
 - Active rule configuration
 
+The React dashboard includes an alert form. Creating an alert from the UI uses the same alert API and rule engine as API-created alerts, then refreshes the dashboard metrics and trend graph.
+
 ---
 
 ## Architecture
@@ -135,7 +137,7 @@ npm run dev
 
 ## API Endpoints
 
-Alerts:
+Alerts (no login required):
 POST /api/v1/alerts  
 GET /api/v1/alerts/:alertId  
 PATCH /api/v1/alerts/:alertId/resolve  

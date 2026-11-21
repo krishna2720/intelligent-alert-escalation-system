@@ -31,5 +31,3 @@ const startServer = async () => {
 };
 
 startServer();
-//krishna125766_db_user
-//WboOgfIRZMrKLaRT

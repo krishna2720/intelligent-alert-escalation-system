@@ -24,10 +24,6 @@ app.get("/health", (req, res) => {
           );
 });
 
-import authRoutes from "./routes/authRoutes.js";
-
-app.use("/api/v1/auth", authRoutes);
-
 import alertRoutes from "./routes/alertRoutes.js";
 
 app.use("/api/v1/alerts", alertRoutes);
