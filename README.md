@@ -384,7 +384,3 @@ Before release, verify:
 
 - GitHub: [@krishna2720](https://github.com/krishna2720)
 - Repository: [intelligent-alert-escalation-system](https://github.com/krishna2720/intelligent-alert-escalation-system)
-
-## License
-
-This project is available for learning and portfolio use. Add an explicit license before commercial reuse.
