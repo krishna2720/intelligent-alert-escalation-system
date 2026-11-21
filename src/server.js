@@ -17,7 +17,7 @@ const startServer = async () => {
   try {
      await connectDB();
      connectRedis();
-     startAutoCloseJob();    //For auto closing job after 2 mins
+     startAutoCloseJob();
 
     app.listen(PORT, () => {
       logger.info(`Server running on port ${PORT}`);

@@ -9,7 +9,8 @@ import RecentClosed from "./components/RecentClosed.js";
 import RuleConfig from "./components/RuleConfiguration.js";
 import AlertForm from "./components/AlertForm.js";
 
-const BASE_URL = "http://localhost:5000/api/v1";      //our backend server url so can fetch data on our frontend
+const BASE_URL =
+  process.env.REACT_APP_API_URL || "http://localhost:5000/api/v1";
 
 function App() {
   const [summaryData, setSummaryData] = useState([]);

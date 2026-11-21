@@ -2,7 +2,7 @@ import cron from "node-cron";
 import { processAutoClose } from "../services/autoCloseService.js";
 import logger from "../config/logger.js";
 
-// Runs every 2 minutes
+// Runs every 5 minutes
 const startAutoCloseJob = () => {
   const schedule = "*/5 * * * *";
 

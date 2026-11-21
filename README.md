@@ -56,12 +56,12 @@ Rules are defined in a JSON config, so behavior can be adjusted without changing
 
 ### Auto-Close Engine
 
-A background job runs periodically and checks:
+A background job runs every 5 minutes and checks:
 
-- Compliance-based condition (e.g. document_valid = true)
-- Expiry window (alert becomes stale after some time)
+- Compliance-based condition (for example, document_valid = true)
+- Expiry window (alert becomes stale after the configured time)
 
-If conditions match, alert is moved to AUTO_CLOSED.
+If a condition matches, the alert is moved to AUTO_CLOSED.
 
 ---
 
@@ -94,24 +94,6 @@ Cache is invalidated on alert updates.
 
 ---
 
-## Time & Space Complexity
-
-- Alert Creation: O(1)
-- Escalation: O(log n)
-- Auto-Close Job: O(m)
-- Dashboard Aggregation: O(n)
-
----
-
-## Design Trade-offs
-
-- Used cron instead of event-driven system (simpler, slight delay)
-- JSON rules instead of DB (flexible but not dynamic reload)
-- Partial caching (simpler invalidation)
-- Simplicity over full scalability
-
----
-
 ## Failure Handling
 
 - Centralized error handler
@@ -122,35 +104,50 @@ Cache is invalidated on alert updates.
 
 ## How to Run
 
-Create .env file with:
-PORT=5000  
-MONGO_URI=your_mongodb_connection_string  
-REDIS_HOST=your_redis_host  
-REDIS_PORT=your_redis_port  
-REDIS_PASSWORD=your_redis_password  
+Create `.env` in the project root:
 
-Run:
-npm install  
-npm run dev  
+```text
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+REDIS_HOST=your_redis_host
+REDIS_PORT=your_redis_port
+REDIS_PASSWORD=your_redis_password
+```
+
+Start the backend:
+
+```bash
+npm install
+npm run dev
+```
+
+Start the React frontend in another terminal:
+
+```bash
+npm --prefix client install
+npm --prefix client start
+```
+
+The frontend runs at `http://localhost:3000` and connects to the backend at `http://localhost:5000`.
 
 ---
 
 ## API Endpoints
 
-Alerts (no login required):
-POST /api/v1/alerts  
-GET /api/v1/alerts/:alertId  
-PATCH /api/v1/alerts/:alertId/resolve  
+Alerts:
+
+```text
+POST   /api/v1/alerts
+GET    /api/v1/alerts/:alertId
+PATCH  /api/v1/alerts/:alertId/resolve
+```
 
 Dashboard:
-GET /api/v1/dashboard/summary  
-GET /api/v1/dashboard/top-drivers  
-GET /api/v1/dashboard/trends  
-GET /api/v1/dashboard/recent-auto-closed  
-GET /api/v1/dashboard/rules  
 
----
-
-## Final Notes
-
-This project focuses on building a system that actively manages alerts using rules, background processing, and analytics.
+```text
+GET /api/v1/dashboard/summary
+GET /api/v1/dashboard/top-drivers
+GET /api/v1/dashboard/trends
+GET /api/v1/dashboard/recent-auto-closed
+GET /api/v1/dashboard/rules
+```
